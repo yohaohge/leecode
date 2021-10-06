@@ -17,45 +17,33 @@
  */
 class Solution {
 public:
-
-    ListNode* reverseList(ListNode* head) {
-        ListNode* per = nullptr;
-        ListNode* cur = head;
-        ListNode* next;
-
-        while(cur != nullptr)
+    void reorderList(ListNode* head) {
+        vector<ListNode*> stack; 
+        ListNode* p = head;
+        while (p != nullptr)
         {
-            next = cur->next;
-            cur->next = per;
-            per = cur;
-            cur = next;
+            stack.push_back(p);
         }
 
-        return per;
-    }
-    void reorderList(ListNode* head) {
-        if(head)return ;
-        // 找中间位置
-        ListNode* fast = head;
-        ListNode* slow = head;
+        p = head;
+        int index = stack.size() - 1;
 
-        head->next= nullptr;
+        ListNode node;
+        p = &node;
+        for(int i = 0 ; i <= index; i++, index--)
+        {
+            p->next = head;
+            p = p->next;
+            head = head->next;
+            if(i != index)
+            {
+                p->next = stack[index];
+                p = p->next;
+            }
+        }
 
-        // while(fast && fast->next)
-        // {
-        //     slow = slow->next;
-        //     fast = fast->next;
-        //     if(fast) 
-        //         fast = fast->next;
 
-        // }
-        // slow->next = nullptr;
-
-        // fast = reverseList(slow->next);
-        // slow->next = nullptr;
-        // slow = head;
-
-     
+        
     }
 };
 // @lc code=end

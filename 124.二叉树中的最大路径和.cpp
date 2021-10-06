@@ -18,13 +18,25 @@
  */
 class Solution {
 public:
-
-    int trave(TreeNode* root)
+    
+    // 当前节点位起点的最大值
+    int visit(TreeNode* root, int& maxres)
     {
-        
+        if(root == nullptr)
+            return 0;
+        int left = visit(root->left, maxres);
+        int right = visit(root->right, maxres);
+        int maxcur = root->val + max(0, left) + max(0, right);
+        maxres = max(maxres, maxcur);
+        return root->val + max(max(left, right),0) ;
     }
-    int maxPathSum(TreeNode* root) {
 
+    int maxPathSum(TreeNode* root) {
+        if(root == nullptr)
+            return 0;
+        int res = root->val;
+        visit(root, res);
+        return res;
     }
 };
 // @lc code=end
