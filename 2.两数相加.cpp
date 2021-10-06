@@ -18,7 +18,27 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        
+        ListNode head;
+        ListNode *p = &head;
+        int num = 0;
+        while(l1 || l2)
+        {
+            int val = num + (l1 ? l1->val : 0) + (l2 ? l2->val : 0);
+            p->next = new ListNode(val%10);
+            p = p->next;
+            num = val / 10;
+            l1 ? l1 = l1->next : 0;
+            l2 ? l2 = l2->next : 0;
+        }
+
+        if(num)
+        {
+            int val = num;
+            p->next = new ListNode(val%10);
+            p = p->next;
+        }
+
+        return head.next;
     }
 };
 // @lc code=end

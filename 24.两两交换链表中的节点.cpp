@@ -18,12 +18,22 @@
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
-        if(head==nullptr || head->next == nullptr) return head;
+        if(head == nullptr || head->next == nullptr)
+            return head;
+        
+        ListNode* p = head;
+        ListNode* q = head->next;
 
-        ListNode* p = head->next;
-        head->next = swapPairs(p->next);
-        p->next = head;
-        return p;
+        p->next = swapPairs(q->next);
+        q->next = p;
+        return q;
+
+        // if(head==nullptr || head->next == nullptr) return head;
+
+        // ListNode* p = head->next;
+        // head->next = swapPairs(p->next);
+        // p->next = head;
+        // return p;
     }
 };
 // @lc code=end

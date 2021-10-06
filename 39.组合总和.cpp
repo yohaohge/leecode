@@ -7,36 +7,37 @@
 // @lc code=start
 class Solution {
 public:
-    unordered_set< string > set;
-    vector<vector<int>>  res;
-    void dfs(vector<int>& candidates, int target, int sum, vector<int> current)
+
+    void dfs(vector<vector<int>>& res, vector<int>& candidates, int index, int sum, vector<int>& cur, int target)
     {
-        if(sum > target) return;
-        //base case
+
+        cout << sum << endl;
         if(sum == target)
         {
-            sort(current.begin(), current.end());
-            //to string
-            string str;
-            for(auto e:current)
-                str += to_string(e) + ",";
-            if(set.find(str) == set.end())
-            {
-                res.push_back(current);
-                set.insert(str);
-            }
+            res.push_back(cur);
         }
 
-        for(auto num:candidates)
+        if(index >= candidates.size() || (sum >= target))
+            return;
+        for(int i = 0; true; i++)
         {
-            current.push_back(num);
-            dfs(candidates, target, sum+num,current);
-            current.pop_back();
+            if(i * candidates[index] + sum > target)
+                break;
+            for(int j = 0; j < i; j++)
+                cur.push_back(candidates[index]);
+            dfs(res, candidates, index + 1, sum + candidates[index] * i, cur, target);
+            for(int j = 0; j < i; j++)
+                cur.pop_back();
         }
+       
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<int> current;
-        dfs(candidates, target, 0,current);
+        // sort(candidates.begin(), candidates.end());
+
+        vector<vector<int>> res;
+        vector<int> cur;
+        dfs(res, candidates, 0, 0, cur, target);
+        
         return res;
     }
 };

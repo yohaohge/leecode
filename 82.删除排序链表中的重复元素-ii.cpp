@@ -31,7 +31,44 @@ public:
     }
 
     ListNode* deleteDuplicates(ListNode* head) {
-        return  deleteDuplicates2(head, nullptr);
+        // return  deleteDuplicates2(head, nullptr);
+        if(head == nullptr)
+            return nullptr;
+        ListNode node;
+        node.next = head;
+
+        ListNode *pEnd = &node;
+        ListNode *pSlow = head;
+        ListNode *pFast = head;
+
+        while(pFast != nullptr)
+        {
+            if(pSlow->val == pFast->val)
+            {
+                pFast = pFast->next;
+            }
+            else
+            {
+                if(pSlow->next == pFast)
+                {
+                    pEnd->next = pSlow;
+                    pEnd = pEnd->next;
+                    pEnd->next = nullptr;
+                }
+                pSlow = pFast;
+            }
+        }
+
+        if(pSlow && pSlow->next == nullptr)
+        {
+            pEnd->next = pSlow;
+            pEnd = pEnd->next;
+            pEnd->next = nullptr;
+        }
+
+        pEnd->next = nullptr;
+
+        return node.next;
     }
 };
 // @lc code=end

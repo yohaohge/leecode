@@ -9,39 +9,57 @@ class Solution {
 public:
     int trap(vector<int>& height) {
 
+        // 当前垂直位置能接雨水的量由左边最高挡板，右边最高挡板和当前位置高度决定
+        // vector<int> backHeight(height.size(), 0);
+        // vector<int> frontHeight(height.size(), 0);
+
+        // stack<int> mystatk;
+        // int maxHeight = 0;
+        // for(int i = height.size() - 1; i >= 0; i--)
+        // {
+        //     backHeight[i] = maxHeight;
+        //     maxHeight = max(maxHeight, height[i]);
+        // }
+
+        // maxHeight = 0;
+        // for(int i = 0; i < height.size(); i++)
+        // {
+        //     frontHeight[i] = maxHeight;
+        //     maxHeight = max(maxHeight, height[i]);
+        // }
+        // int ans = 0;
+        // for(int i = 0; i < height.size(); i++)
+        // {
+        //     int minHight = min(frontHeight[i], backHeight[i]);
+        //     if(minHight > height[i])
+        //     {
+        //         ans += minHight - height[i];
+        //     }
+        // }
+        // return ans;
+
         int ans = 0;
-        int left = 0, right = height.size() - 1;
-        int left_max = 0, right_max = 0;
+        int left = 0; 
+        int right = height.size() -1;
+
+        int level = 0, lower = 0;
 
         while(left < right)
         {
             if(height[left] < height[right])
             {
-                if(height[left] >= left_max)
-                {
-                    left_max = height[left]; 
-                }
-                else
-                {
-                    ans += left_max - height[left];
-                }
-                left++;
+                lower = height[left++];
             }
             else
             {
-                if(height[right] >= right_max)
-                {
-                    right_max = height[right];
-                }
-                else
-                {
-                    ans += right_max - height[right];
-                }
-                right--;
+                lower = height[right--];
             }
-            
-        }
 
+            level = max(level, lower);
+            if(level > lower)
+                ans += level - lower;
+        }
+        
         return ans;
     }
 };

@@ -15,45 +15,80 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
+ 
+struct cmp1
+{
+    bool operator()(const ListNode& node1, const ListNode& node2)
+    {
+        return node2.val < node1.val;
+    }
+};
+
 class Solution {
 public:
 
-    // 可以递归实现
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        
-        ListNode node;
-        ListNode *pEnd = &node;
-
-        while(l1 != nullptr && l2 != nullptr)
-        {
-            if(l1->val < l2->val)
-            {
-                pEnd->next = l1;
-                l1 = l1->next;
-            }
-            else
-            {
-                pEnd->next = l2;
-                l2 = l2->next;
-            }
-            pEnd = pEnd->next;
-        }
-
-        pEnd->next = l1 ? l1 : l2;
-
-        return node.next;
-
-    }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        //链表的归并排序中的归并
-        for(int i = 0; i < (int)(lists.size())-1; i+=2)
+        ListNode head;
+        ListNode *p = &head;
+        priority_queue<ListNode, vector<ListNode>, cmp1> q;
+
+        for(auto e:lists)
         {
-            ListNode* merge = mergeTwoLists(lists[i],lists[i+1]);
-            lists.push_back(merge);
+            if(e != nullptr)
+            {
+                ListNode node;
+                node.next = e;
+                node.val = e->val;
+                q.push(node);
+            }
         }
 
-        if(lists.size()) return lists.back();
-        return nullptr;
+        while(!q.empty())
+        {
+            p->next = q.top().next;
+            p = p->next;
+            ListNode tmp = q.top();
+            q.pop();
+            if(tmp.next != nullptr && tmp.next->next != nullptr)
+            {
+                tmp.next = tmp.next->next;
+                tmp.val = tmp.next->val;
+                q.push(tmp);
+            }
+
+        }
+
+        return head.next;
+
+        // priority_queue<ListNode, vector<ListNode>, cmp1> q;
+        // for(auto e: lists)
+        // {
+        //     if(e != nullptr)
+        //         q.push(ListNode(e->val, e));
+        // }
+
+        // ListNode head;
+        // ListNode* p;
+        // p = &head;
+
+        // while(!q.empty())
+        // {
+        //    ListNode node = q.top();
+        //    q.pop();
+
+        //    p->next = node.next;
+        //    node.next = node.next->next;
+        //    p = p->next;
+        //    p->next = nullptr;
+        //    if(node.next)
+        //    {
+        //        node.val = node.next->val;
+        //        q.push(node);
+        //    }
+        // }
+
+        // return head.next;
     }
 };
 // @lc code=end
